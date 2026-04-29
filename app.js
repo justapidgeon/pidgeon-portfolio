@@ -149,5 +149,7 @@ async function loadPortfolio() {
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
-    loadPortfolio();
+    // Observe static HTML fade-in elements (hero, section headers, tiers, contact)
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    loadPortfolio(); // gallery items are observed individually after creation
 });
