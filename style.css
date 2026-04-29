@@ -152,41 +152,16 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
 /* ---- HERO ---- */
 .hero {
     position: relative;
+    align-items: flex-start;
     justify-content: center;
     padding-top: 120px;
     min-height: 100vh;
     overflow: hidden;
 }
 
-.hero-layout {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 2rem;
-}
-
 .hero-text {
-    flex: 0 0 auto;
-    max-width: 560px;
+    max-width: 620px;
     z-index: 1;
-}
-
-.hero-image {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    z-index: 1;
-}
-
-.hero-pidgeon {
-    width: clamp(300px, 38vw, 540px);
-    height: auto;
-    opacity: 0.9;
-    filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5));
-    user-select: none;
-    pointer-events: none;
 }
 
 /* Aliases for both old and new class names */
