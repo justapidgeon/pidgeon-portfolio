@@ -133,6 +133,7 @@ body {
 /* ---- LAYOUT ---- */
 main { position: relative; z-index: 1; padding: 0 6%; }
 section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+.container { max-width: 1200px; margin: 0 auto; width: 100%; }
 
 .section-header { margin-bottom: 3.5rem; }
 .section-title {
@@ -150,23 +151,27 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
 
 /* ---- HERO ---- */
 .hero {
+    position: relative;
     align-items: flex-start;
     padding-top: 120px;
     min-height: 100vh;
+    overflow: hidden;
 }
-.hero-inner { max-width: 680px; }
+.hero-inner { max-width: 680px; position: relative; z-index: 1; }
 
-.eyebrow {
+/* Aliases for both old and new class names */
+.eyebrow, .hero-pre {
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: 1.75rem;
+    display: block;
     position: relative;
     padding-left: 1.25rem;
 }
-.eyebrow::before {
+.eyebrow::before, .hero-pre::before {
     content: '';
     position: absolute;
     left: 0; top: 50%;
@@ -182,7 +187,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     color: var(--text);
     margin-bottom: 1.5rem;
 }
-.ink-text {
+.ink-text, .italic {
     color: var(--accent);
     font-style: italic;
     font-weight: 300;
@@ -195,7 +200,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     margin-bottom: 3rem;
     max-width: 480px;
 }
-.hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-cta, .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
 
 .hero-bg-pidgeon {
     position: absolute;
@@ -241,12 +246,12 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     box-shadow: 0 8px 24px rgba(147,102,57,0.35);
 }
 
-.btn-outline {
+.btn-outline, .btn-secondary {
     background: transparent;
     color: var(--text);
     border: 1px solid var(--border-hover);
 }
-.btn-outline:hover {
+.btn-outline:hover, .btn-secondary:hover {
     background: var(--surface);
     transform: translateY(-2px);
 }
@@ -315,6 +320,10 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+    background: rgba(28, 22, 14, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(166, 138, 100, 0.12);
 }
 .gallery-cat {
     font-size: 0.72rem;
