@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — pidgeon</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:       #1C160E;
+            --bg-2:     #251D13;
+            --surface:  #2E2518;
+            --border:   rgba(166,138,100,0.18);
+            --accent:   #936639;
+            --accent-l: #A68A64;
+            --text:     #DDD5C4;
+            --muted:    #8A7D6A;
+            --danger:   #9B3232;
+            --danger-h: #B33E3E;
+            --radius:   12px;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* LOGIN */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 3rem 2.5rem;
+            width: 360px;
+            text-align: center;
+        }
+        .login-card h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
+        .login-card p { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
+        #login-error {
+            font-size: 0.82rem;
+            color: #C26060;
+            margin-top: 0.75rem;
+            min-height: 1.2em;
+        }
+
+        /* ADMIN LAYOUT */
+        #admin-screen { display: none; }
+        .admin-header {
+            padding: 1.25rem 5%;
+            background: var(--bg-2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .admin-header h1 { font-size: 1.1rem; font-weight: 700; }
+        .admin-body {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+
+        /* FORM */
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        .panel h2 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 580px) { .form-row { grid-template-columns: 1fr; } }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="url"],
+        select,
+        textarea {
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            padding: 0.65rem 0.9rem;
+            width: 100%;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+        textarea { resize: vertical; min-height: 80px; }
+
+        .drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s, background 0.3s;
+            margin-bottom: 1rem;
+        }
+        .drop-zone:hover, .drop-zone.dragging {
+            border-color: var(--accent);
+            background: rgba(147,102,57,0.05);
+        }
+        .drop-zone p { color: var(--muted); font-size: 0.9rem; }
+        .drop-zone span { color: var(--accent); font-weight: 600; cursor: pointer; }
+        #file-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+            display: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .btn-primary { background: var(--accent); color: #1C160E; }
+        .btn-primary:hover { background: var(--accent-l); transform: translateY(-1px); }
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover { color: var(--text); border-color: rgba(166,138,100,0.35); }
+        .btn-danger { background: var(--danger); color: #fff; font-size: 0.8rem; padding: 0.4rem 1rem; }
+        .btn-danger:hover { background: var(--danger-h); }
+
+        /* ITEMS LIST */
+        .items-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .item-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            transition: border-color 0.2s;
+        }
+        .item-row:hover { border-color: rgba(166,138,100,0.3); }
+        .item-thumb {
+            width: 60px; height: 42px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: var(--surface);
+            flex-shrink: 0;
+        }
+        .item-info { flex: 1; min-width: 0; }
+        .item-title { font-size: 0.95rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-cat { font-size: 0.75rem; color: var(--accent); font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; }
+        .empty-state { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 2rem; }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.35s ease;
+            z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+    <div class="login-card">
+        <h1>pidgeon. Admin</h1>
+        <p>Enter your password to manage portfolio items</p>
+        <div class="form-group" style="text-align:left">
+            <label for="pw-input">Password</label>
+            <input type="password" id="pw-input" placeholder="Password" autocomplete="current-password">
+        </div>
+        <p id="login-error"></p>
+        <button class="btn btn-primary" id="login-btn" style="width:100%; margin-top:1.25rem; justify-content:center;">Enter</button>
+    </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-screen">
+    <div class="admin-header">
+        <h1>pidgeon. — Portfolio Manager</h1>
+        <button class="btn btn-ghost" id="logout-btn">Sign Out</button>
+    </div>
+
+    <div class="admin-body">
+
+        <!-- ADD ITEM FORM -->
+        <div class="panel">
+            <h2>Add New Portfolio Item</h2>
+
+            <div class="drop-zone" id="drop-zone">
+                <p>Drag and drop your image here, or <span id="drop-browse">browse</span></p>
+                <input type="file" id="file-input" accept="image/*" style="display:none">
+                <img id="file-preview" alt="Preview">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="item-title">Title</label>
+                    <input type="text" id="item-title" placeholder="e.g. God Men Esports Banner">
+                </div>
+                <div class="form-group">
+                    <label for="item-cat">Category</label>
+                    <select id="item-cat">
+                        <option value="Graphic Design">Graphic Design</option>
+                        <option value="Logo Design">Logo Design</option>
+                        <option value="Illustration">Illustration</option>
+                        <option value="UI Design">UI Design</option>
+                        <option value="Branding">Branding</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="add-btn">Add to Portfolio</button>
+        </div>
+
+        <!-- CURRENT ITEMS -->
+        <div class="panel">
+            <h2>Current Portfolio Items</h2>
+            <div class="items-list" id="items-list"></div>
+        </div>
+
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    // ---- CONFIG ---- Change this password to something personal ----
+    const ADMIN_PASSWORD = 'pidgeon2026';
+    const STORAGE_KEY = 'pidgeon_portfolio';
+
+    // ---- LOGIN ----
+    const loginBtn = document.getElementById('login-btn');
+    const pwInput = document.getElementById('pw-input');
+    const loginError = document.getElementById('login-error');
+
+    function tryLogin() {
+        if (pwInput.value === ADMIN_PASSWORD) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-screen').style.display = 'block';
+            renderItems();
+        } else {
+            loginError.textContent = 'Incorrect password.';
+            pwInput.value = '';
+            pwInput.focus();
+        }
+    }
+
+    loginBtn.addEventListener('click', tryLogin);
+    pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+
+    document.getElementById('logout-btn').addEventListener('click', () => {
+        document.getElementById('admin-screen').style.display = 'none';
+        document.getElementById('login-screen').style.display = 'flex';
+        pwInput.value = '';
+    });
+
+    // ---- FILE HANDLING ----
+    let currentImageDataUrl = null;
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const filePreview = document.getElementById('file-preview');
+
+    document.getElementById('drop-browse').addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('click', e => { if (e.target.tagName !== 'SPAN') fileInput.click(); });
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files[0]) loadPreview(fileInput.files[0]);
+    });
+
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragging'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('dragging');
+        if (e.dataTransfer.files[0]) loadPreview(e.dataTransfer.files[0]);
+    });
+
+    function loadPreview(file) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+            currentImageDataUrl = ev.target.result;
+            filePreview.src = currentImageDataUrl;
+            filePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // ---- ADD ITEM ----
+    document.getElementById('add-btn').addEventListener('click', () => {
+        const title = document.getElementById('item-title').value.trim();
+        const cat = document.getElementById('item-cat').value;
+
+        if (!title) { showToast('Please enter a title.'); return; }
+        if (!currentImageDataUrl) { showToast('Please select an image.'); return; }
+
+        const items = getItems();
+        items.push({ id: Date.now(), title, cat, img: currentImageDataUrl });
+        saveItems(items);
+        renderItems();
+        resetForm();
+        showToast('Item added to portfolio.');
+    });
+
+    function resetForm() {
+        document.getElementById('item-title').value = '';
+        document.getElementById('item-cat').value = 'Graphic Design';
+        filePreview.style.display = 'none';
+        filePreview.src = '';
+        fileInput.value = '';
+        currentImageDataUrl = null;
+    }
+
+    // ---- RENDER ITEMS ----
+    function renderItems() {
+        const list = document.getElementById('items-list');
+        const items = getItems();
+        if (items.length === 0) {
+            list.innerHTML = '<p class="empty-state">No additional items yet. Add items using the form above.</p>';
+            return;
+        }
+        list.innerHTML = items.map(item => `
+            <div class="item-row" data-id="${item.id}">
+                <img class="item-thumb" src="${item.img}" alt="${item.title}">
+                <div class="item-info">
+                    <div class="item-cat">${item.cat}</div>
+                    <div class="item-title">${item.title}</div>
+                </div>
+                <button class="btn btn-danger" onclick="deleteItem(${item.id})">Remove</button>
+            </div>
+        `).join('');
+    }
+
+    function deleteItem(id) {
+        let items = getItems().filter(i => i.id !== id);
+        saveItems(items);
+        renderItems();
+        showToast('Item removed.');
+    }
+
+    // ---- STORAGE ----
+    function getItems() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+        catch { return []; }
+    }
+    function saveItems(items) { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
+
+    // ---- TOAST ----
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    window.deleteItem = deleteItem;
+</script>
+</body>
+</html>

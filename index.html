@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pidgeon — Visual Designer</title>
+    <meta name="description" content="Freelance Visual, Graphic and UI Designer — open for commissions. Let's build something together.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="noise"></div>
+    <div class="bg-grain"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#hero" class="logo">pidgeon.</a>
+        <ul class="nav-links">
+            <li><a href="#work">Work</a></li>
+            <li><a href="#commission">Commissions</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#work" class="mobile-link">Work</a>
+        <a href="#commission" class="mobile-link">Commissions</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+
+    <main>
+        <!-- HERO -->
+        <section id="hero" class="hero">
+            <div class="hero-inner fade-in">
+                <p class="eyebrow">Freelance Visual / Graphic / UI Designer</p>
+                <h1 class="hero-title">Design that<br><span class="ink-text">speaks for itself.</span></h1>
+                <p class="hero-sub">I create identities, interfaces, and visuals that are built to be remembered.</p>
+                <div class="hero-cta">
+                    <a href="#work" class="btn btn-primary">View My Work</a>
+                    <a href="#commission" class="btn btn-outline">Start a Project</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- WORK GALLERY -->
+        <section id="work" class="work">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Selected Work</h2>
+                <p class="section-sub">A curated selection of recent projects</p>
+            </div>
+            <!-- Default seeded items — admin-added items from localStorage are appended by JS -->
+            <div class="gallery" id="gallery">
+                <div class="gallery-item fade-in" data-category="Graphic Design">
+                    <div class="gallery-img-wrap">
+                        <img src="assets/godmen.png" alt="God Men esports banner" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-cat">Graphic Design</span>
+                        <h3 class="gallery-title">God Men — Esports Banner</h3>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in" style="--d:0.08s" data-category="Logo Design">
+                    <div class="gallery-img-wrap">
+                        <img src="assets/inkfusion.png" alt="ink fusion logo" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-cat">Logo Design</span>
+                        <h3 class="gallery-title">Ink Fusion — Brand Mark</h3>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in" style="--d:0.16s" data-category="Illustration">
+                    <div class="gallery-img-wrap">
+                        <img src="assets/pigeon.png" alt="Pigeon mascot illustration" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-cat">Illustration</span>
+                        <h3 class="gallery-title">Pigeon Mascot Character</h3>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in" style="--d:0.24s" data-category="Illustration">
+                    <div class="gallery-img-wrap">
+                        <img src="assets/chibi.png" alt="Chibi character illustration" loading="lazy">
+                    </div>
+                    <div class="gallery-info">
+                        <span class="gallery-cat">Illustration</span>
+                        <h3 class="gallery-title">Chibi Character Design</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COMMISSIONS -->
+        <section id="commission" class="commission">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Commissions</h2>
+                <p class="section-sub">Currently open — reach out to discuss your project</p>
+            </div>
+            <div class="tiers fade-in">
+                <div class="tier">
+                    <div class="tier-top">
+                        <h3>Starter</h3>
+                        <p>Logo or icon design with two revision rounds.</p>
+                    </div>
+                    <div class="tier-bottom">
+                        <span class="price">from $25</span>
+                        <a href="#contact" class="btn btn-outline btn-sm">Inquire</a>
+                    </div>
+                </div>
+                <div class="tier tier-featured">
+                    <div class="tier-badge">Most Popular</div>
+                    <div class="tier-top">
+                        <h3>Standard</h3>
+                        <p>Full brand identity — logo, color palette, and typography system.</p>
+                    </div>
+                    <div class="tier-bottom">
+                        <span class="price">from $75</span>
+                        <a href="#contact" class="btn btn-primary btn-sm">Inquire</a>
+                    </div>
+                </div>
+                <div class="tier">
+                    <div class="tier-top">
+                        <h3>Custom</h3>
+                        <p>UI design, illustration sets, or any complex project. Fully scoped together.</p>
+                    </div>
+                    <div class="tier-bottom">
+                        <span class="price">Let's talk</span>
+                        <a href="#contact" class="btn btn-outline btn-sm">Inquire</a>
+                    </div>
+                </div>
+            </div>
+            <div class="venmo-block fade-in">
+                <p class="venmo-label">Payments accepted via Venmo</p>
+                <a href="https://venmo.com/u/justapidgeon" target="_blank" rel="noopener noreferrer" id="venmo-btn" class="btn btn-venmo">Pay via Venmo &mdash; @justapidgeon</a>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="contact">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Get in Touch</h2>
+                <p class="section-sub">Have a project in mind or a question? Reach out through any of the channels below.</p>
+            </div>
+            <div class="contact-grid fade-in">
+                <a href="mailto:josiahflores343@gmail.com" class="contact-card">
+                    <span class="contact-label">Email</span>
+                    <span class="contact-value">josiahflores343@gmail.com</span>
+                </a>
+                <a href="tel:+17044538076" class="contact-card">
+                    <span class="contact-label">Phone</span>
+                    <span class="contact-value">(704) 453-8076</span>
+                </a>
+                <div class="contact-card">
+                    <span class="contact-label">Discord</span>
+                    <span class="contact-value">artsypige</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <a href="#hero" class="footer-logo">pidgeon.</a>
+            <p class="footer-copy">&copy; 2026 pidgeon. All rights reserved.</p>
+            <nav class="footer-nav">
+                <a href="#work">Work</a>
+                <a href="#commission">Commissions</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
