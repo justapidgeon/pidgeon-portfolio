@@ -72,32 +72,60 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
 });
 
-// ---- PORTFOLIO DATA ----
-const DEFAULT_WORK = [
-    { title: 'God Men Recruitment Poster', cat: 'Graphic Design', img: 'assets/images/godmen-recruitment-poster.jpg' },
-    { title: 'God Men Banner', cat: 'Graphic Design', img: 'assets/images/godmen.jpg' },
-    { title: 'MRC Closed Qualifiers', cat: 'Graphic Design', img: 'assets/images/mrc-closed-qualifiers-poster.jpg' },
-    { title: 'Scrim Poster vs Cynder', cat: 'Graphic Design', img: 'assets/images/scrim-poster-vs-cynder-love.jpg' },
-    { title: 'Ink Fusion Logo', cat: 'Logo Design', img: 'assets/images/ink-fusion-logo.jpg' },
-    { title: 'MyBro Branding', cat: 'Logo Design', img: 'assets/images/mybro-logo.jpg' },
-    { title: 'Beanie Pidge Character', cat: 'Illustration', img: 'assets/images/beanie-pidge.jpg' },
-    { title: 'Twitch Community Icon', cat: 'Illustration', img: 'assets/images/twitch-icon.jpg' }
-];
+// ---- PORTFOLIO / AUTO-DISCOVERY ----
+const REPO_OWNER = 'justapidgeon';
+const REPO_NAME = 'pidgeon-portfolio';
+const IMAGES_PATH = 'assets/images';
 
-const STORAGE_KEY = 'pidgeon_portfolio';
+async function fetchGitHubImages() {
+    try {
+        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${IMAGES_PATH}`);
+        if (!response.ok) throw new Error('Repo not public or wrong path');
+        const files = await response.json();
+        
+        return files
+            .filter(file => file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i))
+            .map(file => ({
+                title: formatTitle(file.name),
+                cat: 'Project',
+                img: file.path // GitHub path works locally if served from root
+            }));
+    } catch (e) {
+        console.warn('Auto-discovery failed (likely local dev or rate limit). Using fallback.', e);
+        return getFallbackItems();
+    }
+}
 
-function loadPortfolio() {
-    let adminItems = [];
-    try { adminItems = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch {}
-    
-    // Combine default assets with any local admin additions
-    const allItems = [...DEFAULT_WORK, ...adminItems];
-    
+function formatTitle(filename) {
+    // Remove extension and replace dashes/underscores with spaces
+    let title = filename.split('.')[0].replace(/[-_]/g, ' ');
+    // Capitalize first letter of each word
+    return title.replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function getFallbackItems() {
+    // These match the images you currently have in assets/images/
+    return [
+        { title: 'God Men Recruitment Poster', cat: 'Graphic Design', img: 'assets/images/godmen-recruitment-poster.jpg' },
+        { title: 'God Men Banner', cat: 'Graphic Design', img: 'assets/images/godmen.jpg' },
+        { title: 'MRC Closed Qualifiers', cat: 'Graphic Design', img: 'assets/images/mrc-closed-qualifiers-poster.jpg' },
+        { title: 'Scrim Poster vs Cynder', cat: 'Graphic Design', img: 'assets/images/scrim-poster-vs-cynder-love.jpg' },
+        { title: 'Ink Fusion Logo', cat: 'Logo Design', img: 'assets/images/ink-fusion-logo.jpg' },
+        { title: 'MyBro Branding', cat: 'Logo Design', img: 'assets/images/mybro-logo.jpg' },
+        { title: 'Beanie Pidge Character', cat: 'Illustration', img: 'assets/images/beanie-pidge.jpg' },
+        { title: 'Twitch Community Icon', cat: 'Illustration', img: 'assets/images/twitch-icon.jpg' }
+    ];
+}
+
+async function loadPortfolio() {
     const gallery = document.getElementById('gallery');
     if (!gallery) return;
     
-    gallery.innerHTML = ''; // Clear prev
+    // 1. Fetch images automatically from GitHub
+    const allItems = await fetchGitHubImages();
     
+    // 2. Render Masonry Items
+    gallery.innerHTML = '';
     allItems.forEach((item, i) => {
         const el = document.createElement('div');
         el.className = 'gallery-item fade-in';
@@ -113,56 +141,13 @@ function loadPortfolio() {
         `;
         el.addEventListener('click', () => openLightbox(item.img));
         gallery.appendChild(el);
+        
+        // Observe new elements
+        observer.observe(el);
     });
-}
-
-// ---- CAROUSEL AUTO-SCROLL ----
-function initCarousel() {
-    const gallery = document.getElementById('gallery');
-    if (!gallery) return;
-
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-    let autoScrollSpeed = 0.6; 
-    let animationId;
-    let isHovered = false;
-
-    const step = () => {
-        if (!isDown && !isHovered) {
-            gallery.scrollLeft += autoScrollSpeed;
-            if (gallery.scrollLeft >= gallery.scrollWidth - gallery.clientWidth) {
-                gallery.scrollLeft = 0;
-            }
-        }
-        animationId = requestAnimationFrame(step);
-    };
-
-    gallery.addEventListener('mouseenter', () => isHovered = true);
-    gallery.addEventListener('mouseleave', () => isHovered = false);
-
-    gallery.addEventListener('mousedown', (e) => {
-        isDown = true;
-        startX = e.pageX - gallery.offsetLeft;
-        scrollLeft = gallery.scrollLeft;
-        cancelAnimationFrame(animationId);
-    });
-    gallery.addEventListener('mouseleave', () => { isDown = false; step(); });
-    gallery.addEventListener('mouseup', () => { isDown = false; step(); });
-    gallery.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - gallery.offsetLeft;
-        const walk = (x - startX) * 2;
-        gallery.scrollLeft = scrollLeft - walk;
-    });
-
-    step();
 }
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
     loadPortfolio();
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-    initCarousel();
 });
