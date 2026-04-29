@@ -53,42 +53,7 @@
             </div>
             <!-- Default seeded items — admin-added items from localStorage are appended by JS -->
             <div class="gallery" id="gallery">
-                <div class="gallery-item fade-in" data-category="Graphic Design">
-                    <div class="gallery-img-wrap">
-                        <img src="assets/godmen.png" alt="God Men esports banner" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <span class="gallery-cat">Graphic Design</span>
-                        <h3 class="gallery-title">God Men — Esports Banner</h3>
-                    </div>
-                </div>
-                <div class="gallery-item fade-in" style="--d:0.08s" data-category="Logo Design">
-                    <div class="gallery-img-wrap">
-                        <img src="assets/inkfusion.png" alt="ink fusion logo" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <span class="gallery-cat">Logo Design</span>
-                        <h3 class="gallery-title">Ink Fusion — Brand Mark</h3>
-                    </div>
-                </div>
-                <div class="gallery-item fade-in" style="--d:0.16s" data-category="Illustration">
-                    <div class="gallery-img-wrap">
-                        <img src="assets/pigeon.png" alt="Pigeon mascot illustration" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <span class="gallery-cat">Illustration</span>
-                        <h3 class="gallery-title">Pigeon Mascot Character</h3>
-                    </div>
-                </div>
-                <div class="gallery-item fade-in" style="--d:0.24s" data-category="Illustration">
-                    <div class="gallery-img-wrap">
-                        <img src="assets/chibi.png" alt="Chibi character illustration" loading="lazy">
-                    </div>
-                    <div class="gallery-info">
-                        <span class="gallery-cat">Illustration</span>
-                        <h3 class="gallery-title">Chibi Character Design</h3>
-                    </div>
-                </div>
+                <!-- Items will be injected here via JS (localStorage or future data) -->
             </div>
         </section>
 
@@ -171,6 +136,15 @@
             </nav>
         </div>
     </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Full size view">
+            <span class="watermark">pidgeon.</span>
+            <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">&times;</button>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

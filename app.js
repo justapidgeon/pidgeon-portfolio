@@ -20,9 +20,33 @@ const mobileMenu = document.getElementById('mobileMenu');
 menuToggle.addEventListener('click', () => {
     mobileMenu.classList.toggle('open');
 });
-// Close mobile menu on link click
 document.querySelectorAll('.mobile-link').forEach(link => {
     link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+});
+
+// ---- LIGHTBOX ----
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxClose = document.getElementById('lightboxClose');
+
+function openLightbox(src) {
+    lightboxImg.src = src;
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden'; // Stop scrolling
+}
+
+function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { lightboxImg.src = ''; }, 300);
+}
+
+lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target.classList.contains('lightbox-content')) closeLightbox();
+});
+lightboxClose.addEventListener('click', closeLightbox);
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
 });
 
 // ---- LOAD DYNAMIC GALLERY ITEMS FROM LOCALSTORAGE ----
@@ -31,14 +55,12 @@ const STORAGE_KEY = 'pidgeon_portfolio';
 function loadAdminItems() {
     let items = [];
     try { items = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch {}
-    if (!items.length) return;
-
+    
     const gallery = document.getElementById('gallery');
     items.forEach((item, i) => {
         const el = document.createElement('div');
         el.className = 'gallery-item fade-in';
         el.style.setProperty('--d', (i * 0.08) + 's');
-        el.dataset.category = item.cat;
         el.innerHTML = `
             <div class="gallery-img-wrap">
                 <img src="${item.img}" alt="${item.title}" loading="lazy">
@@ -48,6 +70,7 @@ function loadAdminItems() {
                 <h3 class="gallery-title">${item.title}</h3>
             </div>
         `;
+        el.addEventListener('click', () => openLightbox(item.img));
         gallery.appendChild(el);
     });
 }
@@ -55,6 +78,5 @@ function loadAdminItems() {
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
     loadAdminItems();
-    // Observe all fade-in elements (including dynamically added ones)
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 });
