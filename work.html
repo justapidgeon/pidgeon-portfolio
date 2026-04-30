@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selected Work — pidgeon</title>
+    <meta name="description" content="A curated selection of visual design, graphic identity, and UI projects by pidgeon.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="noise"></div>
+    <div class="bg-grain"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">pidgeon.</a>
+        <ul class="nav-links">
+            <li><a href="work.html" class="active">Work</a></li>
+            <li><a href="index.html#commission">Commissions</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="work.html" class="mobile-link">Work</a>
+        <a href="index.html#commission" class="mobile-link">Commissions</a>
+        <a href="index.html#contact" class="mobile-link">Contact</a>
+    </div>
+
+    <main>
+        <!-- WORK GALLERY -->
+        <section id="work" class="work work-page-header">
+            <div class="section-header fade-in">
+                <a href="index.html" class="back-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    Back to Home
+                </a>
+                <h1 class="section-title">Selected Work</h1>
+                <p class="section-sub">A curated selection of recent identities, interfaces, and visuals.</p>
+            </div>
+            
+            <div class="gallery" id="gallery">
+                <!-- Items injected via JS -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <a href="index.html" class="footer-logo">pidgeon.</a>
+            <p class="footer-copy">&copy; 2026 pidgeon. All rights reserved.</p>
+            <nav class="footer-nav">
+                <a href="work.html">Work</a>
+                <a href="index.html#commission">Commissions</a>
+                <a href="index.html#contact">Contact</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Full size view">
+            <span class="watermark">pidgeon.</span>
+            <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">&times;</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
