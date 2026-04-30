@@ -568,9 +568,15 @@ footer {
 @media (max-width: 768px) {
     .nav-links { display: none; }
     .menu-toggle { display: flex; }
-    .gallery { columns: 1; }
+    .gallery { columns: 2; gap: 0.75rem; }
+    .gallery-item { margin-bottom: 0.75rem; }
     .tiers { grid-template-columns: 1fr; }
     .hero-title { letter-spacing: -1.5px; }
     .contact-grid { grid-template-columns: 1fr; }
     .watermark { bottom: 1rem; right: 1rem; font-size: 1rem; }
+}
+
+/* Very small phones — single column */
+@media (max-width: 420px) {
+    .gallery { columns: 1; }
 }
