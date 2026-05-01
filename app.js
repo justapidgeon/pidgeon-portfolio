@@ -138,6 +138,7 @@ function getFallbackItems() {
         { title: 'MRC Closed Qualifiers', cat: 'Advertising', img: 'assets/images/Advertising/mrc-closed-qualifiers-poster.jpg' },
         { title: 'Ink Fusion Logo', cat: 'Logo Design', img: 'assets/images/Logo Designs/ink-fusion-logo.jpg' },
         { title: 'MyBro Branding', cat: 'Logo Design', img: 'assets/images/Logo Designs/my-bro-logo.png' },
+        { title: 'Heavens Fall Logo', cat: 'Logo Design', img: 'assets/images/Logo Designs/heavens-fall-logo.png' },
         { title: 'Twitch Friend', cat: 'Graphic', img: 'assets/images/Graphics/twitch-friend.png' },
         { title: 'Team Talk Typography', cat: 'Graphic', img: 'assets/images/Graphics/team-talk-typography.jpg' },
         { title: 'Honey Pidgeon', cat: 'Graphic', img: 'assets/images/Graphics/pidgeons/honey-pidgeon.png' },
