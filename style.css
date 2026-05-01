@@ -268,6 +268,43 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
 /* ---- GALLERY ---- */
 .work { padding-top: 120px; padding-bottom: 80px; min-height: auto; }
 
+/* ---- FILTERS ---- */
+.filter-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.6rem 1.4rem;
+    border-radius: 50px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.filter-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: var(--accent);
+    color: #1C160E;
+    border-color: var(--accent);
+    font-weight: 600;
+}
+
+
 .gallery {
     columns: 3 320px;
     gap: 1.5rem;

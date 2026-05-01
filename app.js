@@ -77,43 +77,71 @@ const REPO_OWNER = 'justapidgeon';
 const REPO_NAME = 'pidgeon-portfolio';
 const IMAGES_PATH = 'assets/images';
 
+let allPortfolioItems = [];
+
 async function fetchGitHubImages() {
     try {
-        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${IMAGES_PATH}`);
-        if (!response.ok) throw new Error('Repo not public or wrong path');
-        const files = await response.json();
+        // We'll fetch the three main category folders
+        const categories = [
+            { path: 'Advertising', name: 'Advertising' },
+            { path: 'Graphics', name: 'Graphic' },
+            { path: 'Logo Designs', name: 'Logo Design' }
+        ];
+
+        let results = [];
         
-        return files
-            .filter(file => file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i))
-            .map(file => ({
-                title: formatTitle(file.name),
-                cat: 'Project',
-                img: file.path // GitHub path works locally if served from root
-            }));
+        for (const cat of categories) {
+            const items = await fetchFolderRecursive(`${IMAGES_PATH}/${cat.path}`, cat.name);
+            results = results.concat(items);
+        }
+        
+        return results;
     } catch (e) {
-        console.warn('Auto-discovery failed (likely local dev or rate limit). Using fallback.', e);
+        console.warn('Auto-discovery failed. Using fallback.', e);
         return getFallbackItems();
     }
 }
 
+async function fetchFolderRecursive(path, categoryName) {
+    try {
+        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`);
+        if (!response.ok) return [];
+        const files = await response.json();
+        
+        let items = [];
+        for (const file of files) {
+            if (file.type === 'dir') {
+                const subItems = await fetchFolderRecursive(file.path, categoryName);
+                items = items.concat(subItems);
+            } else if (file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
+                items.push({
+                    title: formatTitle(file.name),
+                    cat: categoryName,
+                    img: file.path
+                });
+            }
+        }
+        return items;
+    } catch (e) {
+        return [];
+    }
+}
+
 function formatTitle(filename) {
-    // Remove extension and replace dashes/underscores with spaces
     let title = filename.split('.')[0].replace(/[-_]/g, ' ');
-    // Capitalize first letter of each word
     return title.replace(/\b\w/g, c => c.toUpperCase());
 }
 
 function getFallbackItems() {
-    // These match the images you currently have in assets/images/
     return [
-        { title: 'God Men Recruitment Poster', cat: 'Graphic Design', img: 'assets/images/godmen-recruitment-poster.jpg' },
-        { title: 'God Men Banner', cat: 'Graphic Design', img: 'assets/images/godmen.jpg' },
-        { title: 'MRC Closed Qualifiers', cat: 'Graphic Design', img: 'assets/images/mrc-closed-qualifiers-poster.jpg' },
-        { title: 'Scrim Poster vs Cynder', cat: 'Graphic Design', img: 'assets/images/scrim-poster-vs-cynder-love.jpg' },
-        { title: 'Ink Fusion Logo', cat: 'Logo Design', img: 'assets/images/ink-fusion-logo.jpg' },
-        { title: 'MyBro Branding', cat: 'Logo Design', img: 'assets/images/mybro-logo.jpg' },
-        { title: 'Beanie Pidge Character', cat: 'Illustration', img: 'assets/images/beanie-pidge.jpg' },
-        { title: 'Twitch Community Icon', cat: 'Illustration', img: 'assets/images/twitch-icon.jpg' }
+        { title: 'God Men Recruitment Poster', cat: 'Advertising', img: 'assets/images/Advertising/godmen-recruitment-poster.jpg' },
+        { title: 'MRC Closed Qualifiers', cat: 'Advertising', img: 'assets/images/Advertising/mrc-closed-qualifiers-poster.jpg' },
+        { title: 'Ink Fusion Logo', cat: 'Logo Design', img: 'assets/images/Logo Designs/ink-fusion-logo.jpg' },
+        { title: 'MyBro Branding', cat: 'Logo Design', img: 'assets/images/Logo Designs/my-bro-logo.png' },
+        { title: 'Twitch Friend', cat: 'Graphic', img: 'assets/images/Graphics/twitch-friend.png' },
+        { title: 'Team Talk Typography', cat: 'Graphic', img: 'assets/images/Graphics/team-talk-typography.jpg' },
+        { title: 'Honey Pidgeon', cat: 'Graphic', img: 'assets/images/Graphics/pidgeons/honey-pidgeon.png' },
+        { title: 'Beanie Pidge', cat: 'Graphic', img: 'assets/images/Graphics/pidgeons/beanie-pidge.png' }
     ];
 }
 
@@ -121,15 +149,46 @@ async function loadPortfolio() {
     const gallery = document.getElementById('gallery');
     if (!gallery) return;
     
-    // 1. Fetch images automatically from GitHub
-    const allItems = await fetchGitHubImages();
+    // 1. Fetch images
+    allPortfolioItems = await fetchGitHubImages();
     
-    // 2. Render Masonry Items
+    // 2. Setup Filter Listeners
+    setupFilters();
+    
+    // 3. Initial Render
+    renderGallery('all');
+}
+
+function setupFilters() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGallery(btn.dataset.filter);
+        });
+    });
+}
+
+function renderGallery(filter) {
+    const gallery = document.getElementById('gallery');
+    if (!gallery) return;
+
     gallery.innerHTML = '';
-    allItems.forEach((item, i) => {
+    
+    const filteredItems = filter === 'all' 
+        ? allPortfolioItems 
+        : allPortfolioItems.filter(item => item.cat === filter);
+
+    if (filteredItems.length === 0) {
+        gallery.innerHTML = `<p class="section-sub" style="grid-column: 1/-1; text-align: center; padding: 4rem 0;">No items found in this category.</p>`;
+        return;
+    }
+
+    filteredItems.forEach((item, i) => {
         const el = document.createElement('div');
         el.className = 'gallery-item fade-in';
-        el.style.setProperty('--d', (i * 0.08) + 's');
+        el.style.setProperty('--d', (i * 0.05) + 's');
         el.innerHTML = `
             <div class="gallery-img-wrap">
                 <img src="${item.img}" alt="${item.title}" loading="lazy">
@@ -141,11 +200,10 @@ async function loadPortfolio() {
         `;
         el.addEventListener('click', () => openLightbox(item.img));
         gallery.appendChild(el);
-        
-        // Observe new elements
         observer.observe(el);
     });
 }
+
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
