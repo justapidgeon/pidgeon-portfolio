@@ -134,6 +134,7 @@ function formatTitle(filename) {
 
 function getFallbackItems() {
     return [
+        { title: 'Camping Menu', cat: 'Advertising', img: 'assets/images/Advertising/camping-menu.png' },
         { title: 'God Men Recruitment Poster', cat: 'Advertising', img: 'assets/images/Advertising/godmen-recruitment-poster.jpg' },
         { title: 'MRC Closed Qualifiers', cat: 'Advertising', img: 'assets/images/Advertising/mrc-closed-qualifiers-poster.jpg' },
         { title: 'Ink Fusion Logo', cat: 'Logo Design', img: 'assets/images/Logo Designs/ink-fusion-logo.jpg' },
