@@ -158,6 +158,7 @@ async function fetchFolderRecursive(path, categoryName) {
                 const subItems = await fetchFolderRecursive(file.path, categoryName);
                 items = items.concat(subItems);
             } else if (file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
+                if (file.name.toLowerCase() === 'pp vs god men.png') continue;
                 items.push({
                     title: formatTitle(file.name),
                     cat: categoryName,

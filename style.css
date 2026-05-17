@@ -619,10 +619,10 @@ footer {
     color: #fff;
     font-weight: 800;
     font-size: 1.25rem;
-    opacity: 0.4;
+    opacity: 0.75;
     letter-spacing: -0.5px;
     pointer-events: none;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    mix-blend-mode: difference;
 }
 
 .lightbox-close {
