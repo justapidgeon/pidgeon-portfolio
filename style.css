@@ -333,6 +333,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     width: 100%;
     overflow: hidden;
     background: var(--bg-2);
+    position: relative;
 }
 .gallery-img-wrap img {
     width: 100%;
@@ -347,6 +348,34 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
 .gallery-item:hover .gallery-img-wrap img {
     transform: scale(1.04);
     filter: brightness(1) saturate(1);
+}
+
+.album-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(28, 22, 14, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--accent-light);
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(166, 138, 100, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    pointer-events: none;
+    z-index: 2;
+}
+.album-badge::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="%23A68A64" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>') center/contain no-repeat;
 }
 
 .gallery-info {
@@ -608,6 +637,50 @@ footer {
     transition: color 0.2s;
 }
 .lightbox-close:hover { color: var(--accent); }
+
+.lightbox-nav {
+    display: none;
+    position: absolute;
+    bottom: -4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    gap: 1.5rem;
+    background: rgba(28, 22, 14, 0.85);
+    padding: 0.4rem 1.25rem;
+    border-radius: 50px;
+    border: 1px solid rgba(166, 138, 100, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.lightbox.is-album .lightbox-nav {
+    display: flex;
+}
+.lightbox-prev, .lightbox-next {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+    padding: 0 0.5rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lightbox-prev:hover, .lightbox-next:hover {
+    color: var(--accent);
+    transform: scale(1.15);
+}
+.lightbox-counter {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    min-width: 3rem;
+    text-align: center;
+}
 
 /* ---- RESPONSIVE ---- */
 @media (max-width: 768px) {

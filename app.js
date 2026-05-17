@@ -49,17 +49,55 @@ if (discordCard) {
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const lightboxClose = document.getElementById('lightboxClose');
+const lightboxPrev = document.getElementById('lightboxPrev');
+const lightboxNext = document.getElementById('lightboxNext');
+const lightboxCounter = document.getElementById('lightboxCounter');
+
+let currentAlbum = [];
+let currentIndex = 0;
 
 function openLightbox(src) {
+    currentAlbum = [src];
+    currentIndex = 0;
     lightboxImg.src = src;
+    lightbox.classList.remove('is-album');
     lightbox.classList.add('open');
     document.body.style.overflow = 'hidden';
 }
 
+function openLightboxAlbum(images, index = 0) {
+    currentAlbum = images;
+    currentIndex = index;
+    lightboxImg.src = currentAlbum[currentIndex];
+    lightbox.classList.add('is-album', 'open');
+    updateLightboxCounter();
+    document.body.style.overflow = 'hidden';
+}
+
+function updateLightboxCounter() {
+    if (lightboxCounter) {
+        lightboxCounter.textContent = `${currentIndex + 1} / ${currentAlbum.length}`;
+    }
+}
+
+function nextLightboxImage() {
+    if (currentAlbum.length <= 1) return;
+    currentIndex = (currentIndex + 1) % currentAlbum.length;
+    lightboxImg.src = currentAlbum[currentIndex];
+    updateLightboxCounter();
+}
+
+function prevLightboxImage() {
+    if (currentAlbum.length <= 1) return;
+    currentIndex = (currentIndex - 1 + currentAlbum.length) % currentAlbum.length;
+    lightboxImg.src = currentAlbum[currentIndex];
+    updateLightboxCounter();
+}
+
 function closeLightbox() {
-    lightbox.classList.remove('open');
+    lightbox.classList.remove('open', 'is-album');
     document.body.style.overflow = '';
-    setTimeout(() => { lightboxImg.src = ''; }, 300);
+    setTimeout(() => { lightboxImg.src = ''; currentAlbum = []; }, 300);
 }
 
 if (lightbox) {
@@ -68,8 +106,14 @@ if (lightbox) {
     });
 }
 if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+if (lightboxNext) lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); nextLightboxImage(); });
+if (lightboxPrev) lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prevLightboxImage(); });
+
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextLightboxImage();
+    if (e.key === 'ArrowLeft') prevLightboxImage();
 });
 
 // ---- PORTFOLIO / AUTO-DISCOVERY ----
@@ -152,13 +196,66 @@ async function loadPortfolio() {
     if (!gallery) return;
     
     // 1. Fetch images
-    allPortfolioItems = await fetchGitHubImages();
+    const rawItems = await fetchGitHubImages();
+    allPortfolioItems = groupPortfolioItems(rawItems);
     
     // 2. Setup Filter Listeners
     setupFilters();
     
     // 3. Initial Render
     renderGallery('all');
+}
+
+function groupPortfolioItems(items) {
+    const grouped = [];
+    const albums = {
+        'Pidgeons': { cat: 'Graphic', items: [] },
+        'God Men Logos': { cat: 'Logo Design', items: [] },
+        'God Men VS Scrims': { cat: 'Advertising', items: [] },
+        'Scrim Posters': { cat: 'Advertising', items: [] },
+        'Phi Pi Logos': { cat: 'Logo Design', items: [] }
+    };
+
+    for (const item of items) {
+        let addedToAlbum = false;
+        const lowerImg = item.img.toLowerCase();
+        
+        if (lowerImg.includes('/pidgeons/')) {
+            albums['Pidgeons'].items.push(item);
+            addedToAlbum = true;
+        } else if (lowerImg.includes('god-men-vs-')) {
+            albums['God Men VS Scrims'].items.push(item);
+            addedToAlbum = true;
+        } else if (lowerImg.includes('scrim-poster-')) {
+            albums['Scrim Posters'].items.push(item);
+            addedToAlbum = true;
+        } else if ((lowerImg.includes('god-men') || lowerImg.includes('godmen')) && lowerImg.includes('logo')) {
+            albums['God Men Logos'].items.push(item);
+            addedToAlbum = true;
+        } else if (lowerImg.includes('phi-pi-logo')) {
+            albums['Phi Pi Logos'].items.push(item);
+            addedToAlbum = true;
+        }
+
+        if (!addedToAlbum) {
+            grouped.push(item);
+        }
+    }
+
+    for (const [albumTitle, albumData] of Object.entries(albums)) {
+        if (albumData.items.length > 0) {
+            grouped.push({
+                isAlbum: true,
+                title: albumTitle,
+                cat: albumData.cat,
+                img: albumData.items[0].img, // Cover image
+                images: albumData.items.map(i => i.img) // Array of all images in album
+            });
+        }
+    }
+
+    // Sort to make sure albums appear nicely, or just keep as is
+    return grouped;
 }
 
 function setupFilters() {
@@ -190,17 +287,25 @@ function renderGallery(filter) {
     filteredItems.forEach((item, i) => {
         const el = document.createElement('div');
         el.className = 'gallery-item fade-in';
+        if (item.isAlbum) el.classList.add('is-album');
         el.style.setProperty('--d', (i * 0.05) + 's');
         el.innerHTML = `
             <div class="gallery-img-wrap">
                 <img src="${item.img}" alt="${item.title}" loading="lazy">
+                ${item.isAlbum ? `<div class="album-badge">${item.images.length} Items</div>` : ''}
             </div>
             <div class="gallery-info">
                 <span class="gallery-cat">${item.cat}</span>
                 <h3 class="gallery-title">${item.title}</h3>
             </div>
         `;
-        el.addEventListener('click', () => openLightbox(item.img));
+        el.addEventListener('click', () => {
+            if (item.isAlbum) {
+                openLightboxAlbum(item.images, 0);
+            } else {
+                openLightbox(item.img);
+            }
+        });
         gallery.appendChild(el);
         observer.observe(el);
     });
