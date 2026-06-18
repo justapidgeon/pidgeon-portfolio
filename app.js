@@ -126,35 +126,86 @@ const IMAGES_PATH = 'assets/images';
 // Add new projects here as you build more.
 const FEATURED_PROJECTS = [
     {
+        id: 'dinner-time',
+        title: 'Dinner Time',
+        subtitle: 'Brand Identity System',
+        description: 'A complete brand identity deep-dive — including logo rough drafts, digital vector versions, wordmark, typography, custom monogram, character mascot sketches, color palette, and esports tournament banners.',
+        tags: ['Logo Design', 'Illustration', 'Brand Identity'],
+        cover: 'assets/images/Brand Identity/dinner-time-logo-transparent.png',
+        imagePaths: [
+            'assets/images/Brand Identity/dinner-time-logo-transparent.png',
+            'assets/images/Brand Identity/dinner-time-logo-white.png',
+            'assets/images/Brand Identity/dinner-time-logo-typeface.png',
+            'assets/images/Brand Identity/dinner-time-logo-rough-drafts.png',
+            'assets/images/Brand Identity/dinner-time-concept-drawing.png',
+            'assets/images/Brand Identity/dinner-time-draft-mascot.png',
+            'assets/images/Brand Identity/dinner-time-draft-wordmark.png',
+            'assets/images/Brand Identity/dinner-time-draft-monogram.png',
+            'assets/images/Brand Identity/dinner-time-color-palette.png',
+            'assets/images/Brand Identity/dinner-time-closed-qualifiers-banner.png',
+        ],
+    },
+    {
         id: 'god-men',
         title: 'God Men',
-        subtitle: 'Brand Identity System',
-        description: 'A complete brand identity for an Apex Legends competitive team. Developed across logo marks, scrim posters, match day banners, and recruitment graphics.',
+        subtitle: 'Brand Identity & Advertising',
+        description: 'A robust, dark esports brand identity developed for an Apex Legends competitive team. Includes logo design iterations, custom signatures, schedule and ranking posters, and a comprehensive VS match day banner series.',
         tags: ['Logo Design', 'Advertising', 'Brand Identity'],
-        // Cover image — shown on the featured card (path relative to repo)
-        cover: 'assets/images/Logo Designs/god-men-logo-draft-3.png',
-        // All images that belong to this project — opened in the lightbox
+        cover: 'assets/images/Brand Identity/god-men-logo-draft-3.png',
         imagePaths: [
-            'assets/images/Logo Designs/god-men-logo-draft-1.png',
-            'assets/images/Logo Designs/god-men-logo-draft-2.png',
-            'assets/images/Logo Designs/god-men-logo-draft-3.png',
-            'assets/images/Logo Designs/god-men-purple-logo.png',
-            'assets/images/Logo Designs/god-men-white-logo.png',
+            'assets/images/Brand Identity/god-men-logo-draft-3.png',
+            'assets/images/Brand Identity/god-men-logo-draft-1.png',
+            'assets/images/Brand Identity/god-men-logo-draft-2.png',
+            'assets/images/Brand Identity/god-men-purple-logo.png',
+            'assets/images/Brand Identity/god-men-white-logo.png',
+            'assets/images/Brand Identity/god-men-artistic-logo.png',
+            'assets/images/Brand Identity/god-men-signature-final.png',
+            'assets/images/Brand Identity/godmen-signature-logo.png',
+            'assets/images/Brand Identity/god-men-closed-qualifiers-banner.png',
             'assets/images/Advertising/godmen-recruitment-poster.jpg',
+            'assets/images/Advertising/god-men-mrc-poster.png',
+            'assets/images/Advertising/god-men-break-week-poster.png',
+            'assets/images/Advertising/god-men-final-ranking-poster.png',
+            'assets/images/Advertising/god-men-schedule-week-one-poster.png',
+            'assets/images/Advertising/god-men-schedule-week-two-poster.png',
+            'assets/images/Advertising/god-men-vs-dinner-time-poster.png',
+            'assets/images/Advertising/god-men-vs-dinner-time-banner.png',
             'assets/images/Advertising/god-men-vs-apexs-poster.png',
+            'assets/images/Advertising/god-men-vs-apexs-banner.png',
             'assets/images/Advertising/god-men-vs-cynder-love-poster.png',
+            'assets/images/Advertising/god-men-vs-cynder-love-banner.png',
             'assets/images/Advertising/god-men-vs-ethernal-poster.png',
+            'assets/images/Advertising/god-men-vs-ethernal-banner.png',
             'assets/images/Advertising/god-men-vs-fallen-knights-poster.png',
+            'assets/images/Advertising/god-men-vs-fallen-knights-banner.png',
             'assets/images/Advertising/god-men-vs-phreaky-phridays-poster.png',
+            'assets/images/Advertising/god-men-vs-phreaky-phridays-banner.png',
             'assets/images/Advertising/god-men-vs-pyrotechnics-poster.png',
+            'assets/images/Advertising/god-men-vs-pyrotechnics-banner.png',
             'assets/images/Advertising/god-men-vs-westside-poster.png',
+            'assets/images/Advertising/god-men-vs-westside-banner.png',
+        ],
+    },
+    {
+        id: 'pidgeon-coffee',
+        title: 'pidgeon Coffee',
+        subtitle: 'Cafe Brand Identity',
+        description: 'A cozy, custom cafe branding project including alternative logo stamps, typographic designs, and concept sketches.',
+        tags: ['Logo Design', 'Branding', 'Typography'],
+        cover: 'assets/images/Brand Identity/pidgeon-coffee-logo.png',
+        imagePaths: [
+            'assets/images/Brand Identity/pidgeon-coffee-logo.png',
+            'assets/images/Brand Identity/pidgeon-coffee-type-logo.png',
+            'assets/images/Brand Identity/pidgeon-coffee-alternative-logo.png',
+            'assets/images/Brand Identity/pidgeon-coffee-logo-draft.png',
+            'assets/images/Logo Designs/pidgeon-co-final-logo.png',
         ],
     },
     {
         id: 'cars-and-clouds',
         title: 'Cars & Clouds',
         subtitle: 'Brand Identity',
-        description: 'Business card design for Cars & Clouds — a minimalist brand identity featuring front and back layouts.',
+        description: 'Clean, minimalist corporate stationery and business card identity, featuring double-sided layout designs.',
         tags: ['Brand Identity', 'Print Design'],
         cover: 'assets/images/Advertising/cars-and-clouds-business-card-front.png',
         imagePaths: [
@@ -165,13 +216,13 @@ const FEATURED_PROJECTS = [
     {
         id: 'pidgeon-brand',
         title: 'pidgeon.',
-        subtitle: 'Personal Brand & Mascots',
-        description: 'An ongoing personal brand project — developing the pidgeon mascot character across multiple styles, seasons, and aesthetics.',
+        subtitle: 'Personal Mascot Series',
+        description: 'A massive personal mascot illustration system. Features the core pidgeon character redesigned into sixteen thematic outfits, seasonal characters, and pop-culture styles.',
         tags: ['Character Design', 'Branding', 'Illustration'],
         cover: 'assets/images/Graphics/pidgeons/honey-pidgeon.png',
         imagePaths: [
-            'assets/images/Graphics/pidgeons/the-original.png',
             'assets/images/Graphics/pidgeons/honey-pidgeon.png',
+            'assets/images/Graphics/pidgeons/the-original.png',
             'assets/images/Graphics/pidgeons/beanie-pidge.png',
             'assets/images/Graphics/pidgeons/beanie-pidge-white.png',
             'assets/images/Graphics/pidgeons/red-pidgeon.png',
@@ -188,6 +239,21 @@ const FEATURED_PROJECTS = [
             'assets/images/Graphics/pidgeons/admin-pidgeon.png',
         ],
     },
+    {
+        id: 'justapidgeon-portfolio',
+        title: 'justapidgeon Portfolio',
+        subtitle: 'Self-Promo Poster Series',
+        description: 'Self-promotional poster designs showcasing custom layout concepts, draft iterations, and typography.',
+        tags: ['Advertising', 'Poster Design', 'Typography'],
+        cover: 'assets/images/Advertising/justapidgeon-portfolio-poster.png',
+        imagePaths: [
+            'assets/images/Advertising/justapidgeon-portfolio-poster.png',
+            'assets/images/Advertising/justapidgeon-portfolio-draft-one.png',
+            'assets/images/Advertising/justapidgeon-portfolio-draft-two.png',
+            'assets/images/Advertising/justapidgeon-portfolio-draft-three.png',
+            'assets/images/Advertising/justapidgeon-poster-draft.png',
+        ],
+    },
 ];
 
 // Paths that belong to featured projects — excluded from the archive grid to avoid duplicates
@@ -202,7 +268,8 @@ async function fetchGitHubImages() {
         const categories = [
             { path: 'Advertising', name: 'Advertising' },
             { path: 'Graphics', name: 'Graphic' },
-            { path: 'Logo Designs', name: 'Logo Design' }
+            { path: 'Logo Designs', name: 'Logo Design' },
+            { path: 'Brand Identity', name: 'Logo Design' }
         ];
 
         let results = [];
@@ -339,9 +406,14 @@ function groupArchiveItems(items) {
     const grouped = [];
     const albums = {
         'Scrim Posters': { cat: 'Advertising', items: [] },
+        'Coffee Illustrations': { cat: 'Graphic', items: [] },
+        'Marvel Line Art': { cat: 'Graphic', items: [] },
         'Phi Pi Logos': { cat: 'Logo Design', items: [] },
         'LanceArt Logos': { cat: 'Logo Design', items: [] },
     };
+
+    const coffeeNames = ['americano', 'cappuccino', 'cold-brew', 'espresso', 'flat-white', 'iced-latte', 'latte', 'macchiato', 'matcha', 'mocha'];
+    const marvelNames = ['deadpool', 'cyclops', 'gambit', 'invisible-woman'];
 
     for (const item of items) {
         let added = false;
@@ -349,6 +421,12 @@ function groupArchiveItems(items) {
 
         if (lowerImg.includes('scrim-poster-')) {
             albums['Scrim Posters'].items.push(item);
+            added = true;
+        } else if (coffeeNames.some(name => lowerImg.includes(name))) {
+            albums['Coffee Illustrations'].items.push(item);
+            added = true;
+        } else if (marvelNames.some(name => lowerImg.includes(name))) {
+            albums['Marvel Line Art'].items.push(item);
             added = true;
         } else if (lowerImg.includes('phi-pi-logo')) {
             albums['Phi Pi Logos'].items.push(item);
