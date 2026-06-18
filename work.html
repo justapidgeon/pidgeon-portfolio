@@ -32,7 +32,7 @@
     </div>
 
     <main>
-        <!-- WORK GALLERY -->
+        <!-- PAGE HEADER -->
         <section id="work" class="work work-page-header">
             <div class="section-header fade-in">
                 <a href="index.html" class="back-link">
@@ -40,16 +40,32 @@
                     Back to Home
                 </a>
                 <h1 class="section-title">Selected Work</h1>
-                <p class="section-sub">A curated selection of recent identities, interfaces, and visuals.</p>
+                <p class="section-sub">Brand identities, graphics, and visual systems — designed with purpose.</p>
             </div>
-            
-            <div class="filter-container fade-in" style="--d: 0.1s">
+
+            <!-- FEATURED PROJECTS (Brand Identities) -->
+            <div class="featured-projects fade-in" id="featuredProjects" style="--d: 0.1s">
+                <!-- Injected by JS -->
+            </div>
+
+            <!-- ARCHIVE DIVIDER -->
+            <div class="archive-header fade-in" style="--d: 0.2s">
+                <div class="archive-header-inner">
+                    <span class="archive-label">Design Archive</span>
+                    <div class="archive-rule"></div>
+                </div>
+                <p class="archive-sub">All work — logos, graphics, and posters.</p>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="filter-container fade-in" style="--d: 0.3s">
                 <button class="filter-btn active" data-filter="all">All</button>
                 <button class="filter-btn" data-filter="Logo Design">Logo Design</button>
                 <button class="filter-btn" data-filter="Graphic">Graphic</button>
                 <button class="filter-btn" data-filter="Advertising">Advertising</button>
             </div>
-            
+
+            <!-- ARCHIVE GRID -->
             <div class="gallery" id="gallery">
                 <!-- Items injected via JS -->
             </div>

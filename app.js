@@ -6,7 +6,7 @@ const observer = new IntersectionObserver((entries, obs) => {
             obs.unobserve(entry.target);
         }
     });
-}, { threshold: 0.12 });
+}, { threshold: 0.08 });
 
 // ---- NAVBAR SCROLL STATE ----
 const navbar = document.getElementById('navbar');
@@ -121,11 +121,84 @@ const REPO_OWNER = 'justapidgeon';
 const REPO_NAME = 'pidgeon-portfolio';
 const IMAGES_PATH = 'assets/images';
 
+// ---- FEATURED PROJECTS CONFIG ----
+// These are your big brand identity projects, displayed prominently at the top.
+// Add new projects here as you build more.
+const FEATURED_PROJECTS = [
+    {
+        id: 'god-men',
+        title: 'God Men',
+        subtitle: 'Brand Identity System',
+        description: 'A complete brand identity for an Apex Legends competitive team. Developed across logo marks, scrim posters, match day banners, and recruitment graphics.',
+        tags: ['Logo Design', 'Advertising', 'Brand Identity'],
+        // Cover image — shown on the featured card (path relative to repo)
+        cover: 'assets/images/Logo Designs/god-men-logo-draft-3.png',
+        // All images that belong to this project — opened in the lightbox
+        imagePaths: [
+            'assets/images/Logo Designs/god-men-logo-draft-1.png',
+            'assets/images/Logo Designs/god-men-logo-draft-2.png',
+            'assets/images/Logo Designs/god-men-logo-draft-3.png',
+            'assets/images/Logo Designs/god-men-purple-logo.png',
+            'assets/images/Logo Designs/god-men-white-logo.png',
+            'assets/images/Advertising/godmen-recruitment-poster.jpg',
+            'assets/images/Advertising/god-men-vs-apexs-poster.png',
+            'assets/images/Advertising/god-men-vs-cynder-love-poster.png',
+            'assets/images/Advertising/god-men-vs-ethernal-poster.png',
+            'assets/images/Advertising/god-men-vs-fallen-knights-poster.png',
+            'assets/images/Advertising/god-men-vs-phreaky-phridays-poster.png',
+            'assets/images/Advertising/god-men-vs-pyrotechnics-poster.png',
+            'assets/images/Advertising/god-men-vs-westside-poster.png',
+        ],
+    },
+    {
+        id: 'cars-and-clouds',
+        title: 'Cars & Clouds',
+        subtitle: 'Brand Identity',
+        description: 'Business card design for Cars & Clouds — a minimalist brand identity featuring front and back layouts.',
+        tags: ['Brand Identity', 'Print Design'],
+        cover: 'assets/images/Advertising/cars-and-clouds-business-card-front.png',
+        imagePaths: [
+            'assets/images/Advertising/cars-and-clouds-business-card-front.png',
+            'assets/images/Advertising/cars-and-clouds-business-card-back.png',
+        ],
+    },
+    {
+        id: 'pidgeon-brand',
+        title: 'pidgeon.',
+        subtitle: 'Personal Brand & Mascots',
+        description: 'An ongoing personal brand project — developing the pidgeon mascot character across multiple styles, seasons, and aesthetics.',
+        tags: ['Character Design', 'Branding', 'Illustration'],
+        cover: 'assets/images/Graphics/pidgeons/honey-pidgeon.png',
+        imagePaths: [
+            'assets/images/Graphics/pidgeons/the-original.png',
+            'assets/images/Graphics/pidgeons/honey-pidgeon.png',
+            'assets/images/Graphics/pidgeons/beanie-pidge.png',
+            'assets/images/Graphics/pidgeons/beanie-pidge-white.png',
+            'assets/images/Graphics/pidgeons/red-pidgeon.png',
+            'assets/images/Graphics/pidgeons/snow-pidgeon.png',
+            'assets/images/Graphics/pidgeons/pumpgeon.png',
+            'assets/images/Graphics/pidgeons/failed-pumpgeon.png',
+            'assets/images/Graphics/pidgeons/cloak-and-pidgeon.png',
+            'assets/images/Graphics/pidgeons/koalageon.png',
+            'assets/images/Graphics/pidgeons/pidgeky.png',
+            'assets/images/Graphics/pidgeons/skullgeon.png',
+            'assets/images/Graphics/pidgeons/skullgeon-with-hat.png',
+            'assets/images/Graphics/pidgeons/st.-pidgeon.png',
+            'assets/images/Graphics/pidgeons/reign-the-pidgeon.png',
+            'assets/images/Graphics/pidgeons/admin-pidgeon.png',
+        ],
+    },
+];
+
+// Paths that belong to featured projects — excluded from the archive grid to avoid duplicates
+const FEATURED_PATHS = new Set(
+    FEATURED_PROJECTS.flatMap(p => p.imagePaths.map(s => s.toLowerCase()))
+);
+
 let allPortfolioItems = [];
 
 async function fetchGitHubImages() {
     try {
-        // We'll fetch the three main category folders
         const categories = [
             { path: 'Advertising', name: 'Advertising' },
             { path: 'Graphics', name: 'Graphic' },
@@ -133,12 +206,10 @@ async function fetchGitHubImages() {
         ];
 
         let results = [];
-        
         for (const cat of categories) {
             const items = await fetchFolderRecursive(`${IMAGES_PATH}/${cat.path}`, cat.name);
             results = results.concat(items);
         }
-        
         return results;
     } catch (e) {
         console.warn('Auto-discovery failed. Using fallback.', e);
@@ -151,7 +222,7 @@ async function fetchFolderRecursive(path, categoryName) {
         const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`);
         if (!response.ok) return [];
         const files = await response.json();
-        
+
         let items = [];
         for (const file of files) {
             if (file.type === 'dir') {
@@ -180,67 +251,114 @@ function formatTitle(filename) {
 function getFallbackItems() {
     return [
         { title: 'Camping Menu', cat: 'Advertising', img: 'assets/images/Advertising/camping-menu.png' },
-        { title: 'God Men Recruitment Poster', cat: 'Advertising', img: 'assets/images/Advertising/godmen-recruitment-poster.jpg' },
         { title: 'MRC Closed Qualifiers', cat: 'Advertising', img: 'assets/images/Advertising/mrc-closed-qualifiers-poster.jpg' },
         { title: 'Ink Fusion Logo', cat: 'Logo Design', img: 'assets/images/Logo Designs/ink-fusion-logo.jpg' },
         { title: 'MyBro Branding', cat: 'Logo Design', img: 'assets/images/Logo Designs/my-bro-logo.png' },
         { title: 'Heavens Fall Logo', cat: 'Logo Design', img: 'assets/images/Logo Designs/heavens-fall-logo.png' },
         { title: 'Twitch Friend', cat: 'Graphic', img: 'assets/images/Graphics/twitch-friend.png' },
         { title: 'Team Talk Typography', cat: 'Graphic', img: 'assets/images/Graphics/team-talk-typography.jpg' },
-        { title: 'Honey Pidgeon', cat: 'Graphic', img: 'assets/images/Graphics/pidgeons/honey-pidgeon.png' },
-        { title: 'Beanie Pidge', cat: 'Graphic', img: 'assets/images/Graphics/pidgeons/beanie-pidge.png' }
     ];
 }
 
 async function loadPortfolio() {
     const gallery = document.getElementById('gallery');
+    const featuredContainer = document.getElementById('featuredProjects');
     if (!gallery) return;
-    
-    // 1. Fetch images
+
+    // 1. Render Featured Projects immediately (no async needed — paths are configured)
+    if (featuredContainer) {
+        renderFeaturedProjects(featuredContainer);
+    }
+
+    // 2. Fetch archive items from GitHub
     const rawItems = await fetchGitHubImages();
-    allPortfolioItems = groupPortfolioItems(rawItems);
-    
-    // 2. Setup Filter Listeners
+
+    // 3. Filter out items that belong to featured projects
+    const archiveItems = rawItems.filter(item => {
+        return !FEATURED_PATHS.has(item.img.toLowerCase());
+    });
+
+    // 4. Group remaining archive items
+    allPortfolioItems = groupArchiveItems(archiveItems);
+
+    // 5. Setup filter listeners + render archive
     setupFilters();
-    
-    // 3. Initial Render
     renderGallery('all');
 }
 
-function groupPortfolioItems(items) {
+function renderFeaturedProjects(container) {
+    container.innerHTML = '';
+    FEATURED_PROJECTS.forEach((project, i) => {
+        const isReversed = i % 2 !== 0;
+        const el = document.createElement('div');
+        el.className = `featured-row fade-in${isReversed ? ' featured-row--reversed' : ''}`;
+        el.style.setProperty('--d', (i * 0.12) + 's');
+
+        const tagsHTML = project.tags.map(t => `<span class="featured-tag">${t}</span>`).join('');
+        const countLabel = project.imagePaths.length > 1
+            ? `${project.imagePaths.length} assets`
+            : '1 asset';
+
+        el.innerHTML = `
+            <div class="featured-img-wrap">
+                <img src="${project.cover}" alt="${project.title}" loading="lazy">
+                <div class="featured-img-count">${countLabel}</div>
+            </div>
+            <div class="featured-info">
+                <div class="featured-meta">
+                    <span class="featured-index">0${i + 1}</span>
+                    <span class="featured-subtitle">${project.subtitle}</span>
+                </div>
+                <h2 class="featured-title">${project.title}</h2>
+                <p class="featured-desc">${project.description}</p>
+                <div class="featured-tags">${tagsHTML}</div>
+                <button class="btn btn-primary featured-btn" data-project-id="${project.id}">
+                    View Project &nbsp;→
+                </button>
+            </div>
+        `;
+
+        const btn = el.querySelector('.featured-btn');
+        btn.addEventListener('click', () => {
+            openLightboxAlbum(project.imagePaths, 0);
+        });
+
+        // Clicking the image also opens the lightbox
+        const imgWrap = el.querySelector('.featured-img-wrap');
+        imgWrap.addEventListener('click', () => {
+            openLightboxAlbum(project.imagePaths, 0);
+        });
+
+        container.appendChild(el);
+        observer.observe(el);
+    });
+}
+
+function groupArchiveItems(items) {
+    // Only group remaining items not handled by featured projects
     const grouped = [];
     const albums = {
-        'Pidgeons': { cat: 'Graphic', items: [] },
-        'God Men Logos': { cat: 'Logo Design', items: [] },
-        'God Men VS Scrims': { cat: 'Advertising', items: [] },
         'Scrim Posters': { cat: 'Advertising', items: [] },
-        'Phi Pi Logos': { cat: 'Logo Design', items: [] }
+        'Phi Pi Logos': { cat: 'Logo Design', items: [] },
+        'LanceArt Logos': { cat: 'Logo Design', items: [] },
     };
 
     for (const item of items) {
-        let addedToAlbum = false;
+        let added = false;
         const lowerImg = item.img.toLowerCase();
-        
-        if (lowerImg.includes('/pidgeons/')) {
-            albums['Pidgeons'].items.push(item);
-            addedToAlbum = true;
-        } else if (lowerImg.includes('god-men-vs-')) {
-            albums['God Men VS Scrims'].items.push(item);
-            addedToAlbum = true;
-        } else if (lowerImg.includes('scrim-poster-')) {
+
+        if (lowerImg.includes('scrim-poster-')) {
             albums['Scrim Posters'].items.push(item);
-            addedToAlbum = true;
-        } else if ((lowerImg.includes('god-men') || lowerImg.includes('godmen')) && lowerImg.includes('logo')) {
-            albums['God Men Logos'].items.push(item);
-            addedToAlbum = true;
+            added = true;
         } else if (lowerImg.includes('phi-pi-logo')) {
             albums['Phi Pi Logos'].items.push(item);
-            addedToAlbum = true;
+            added = true;
+        } else if (lowerImg.includes('lanceart-logo')) {
+            albums['LanceArt Logos'].items.push(item);
+            added = true;
         }
 
-        if (!addedToAlbum) {
-            grouped.push(item);
-        }
+        if (!added) grouped.push(item);
     }
 
     for (const [albumTitle, albumData] of Object.entries(albums)) {
@@ -249,13 +367,12 @@ function groupPortfolioItems(items) {
                 isAlbum: true,
                 title: albumTitle,
                 cat: albumData.cat,
-                img: albumData.items[0].img, // Cover image
-                images: albumData.items.map(i => i.img) // Array of all images in album
+                img: albumData.items[0].img,
+                images: albumData.items.map(i => i.img)
             });
         }
     }
 
-    // Sort to make sure albums appear nicely, or just keep as is
     return grouped;
 }
 
@@ -275,9 +392,9 @@ function renderGallery(filter) {
     if (!gallery) return;
 
     gallery.innerHTML = '';
-    
-    const filteredItems = filter === 'all' 
-        ? allPortfolioItems 
+
+    const filteredItems = filter === 'all'
+        ? allPortfolioItems
         : allPortfolioItems.filter(item => item.cat === filter);
 
     if (filteredItems.length === 0) {
@@ -315,7 +432,6 @@ function renderGallery(filter) {
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
-    // Observe static HTML fade-in elements (hero, section headers, tiers, contact)
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-    loadPortfolio(); // gallery items are observed individually after creation
+    loadPortfolio();
 });
