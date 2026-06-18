@@ -20,8 +20,13 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
 
+::selection {
+    color: #F00000;
+    background: #E6FF00;
+}
+
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: var(--bg);
     color: var(--text);
     overflow-x: hidden;
@@ -174,6 +179,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
 
 /* Aliases for both old and new class names */
 .eyebrow, .hero-pre {
+    font-family: 'Fragment Mono', monospace;
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -201,9 +207,10 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     margin-bottom: 1.5rem;
 }
 .ink-text, .italic {
+    font-family: 'Instrument Serif', serif;
     color: var(--accent);
     font-style: italic;
-    font-weight: 300;
+    font-weight: 400;
 }
 
 .hero-sub {
@@ -221,7 +228,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     align-items: center;
     padding: 0.85rem 2rem;
     border-radius: 50px;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 0.95rem;
     text-decoration: none;
@@ -360,6 +367,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     color: var(--accent-light);
     padding: 0.35rem 0.75rem;
     border-radius: 50px;
+    font-family: 'Fragment Mono', monospace;
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.05em;
@@ -389,6 +397,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     border-top: 1px solid rgba(166, 138, 100, 0.12);
 }
 .gallery-cat {
+    font-family: 'Fragment Mono', monospace;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -433,6 +442,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     transform: translateX(-50%);
     background: var(--accent);
     color: #1C160E;
+    font-family: 'Fragment Mono', monospace;
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -459,6 +469,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     gap: 0.75rem;
 }
 .price {
+    font-family: 'Fragment Mono', monospace;
     font-size: 1.35rem;
     font-weight: 800;
     color: var(--accent-light);
@@ -526,6 +537,7 @@ section { min-height: 100vh; display: flex; flex-direction: column; justify-cont
     transform: translateY(-2px);
 }
 .contact-label {
+    font-family: 'Fragment Mono', monospace;
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -674,6 +686,7 @@ footer {
     transform: scale(1.15);
 }
 .lightbox-counter {
+    font-family: 'Fragment Mono', monospace;
     font-size: 0.85rem;
     color: var(--muted);
     font-weight: 500;
